@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>營業員考試｜學習與模擬考 - 星鴻宜蘭團隊</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px 24px 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .flex-row label {
+      font-weight: 600;
+    }
+    select, button, input[type="radio"] {
+      font-size: 14px;
+    }
+    select {
+      padding: 4px 8px;
+    }
+    button {
+      padding: 6px 12px;
+      margin-right: 8px;
+      border-radius: 4px;
+      border: 1px solid #1976d2;
+      background: #1976d2;
+      color: #fff;
+      cursor: pointer;
+    }
+    button.secondary {
+      border-color: #9e9e9e;
+      background: #fff;
+      color: #424242;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .mode-block {
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #f0f4ff;
+      margin-bottom: 16px;
+    }
+    .question-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-top: 10px;
+      background: #fafafa;
+    }
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #666;
+    }
+    .question-text {
+      font-size: 16px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .options {
+      margin-bottom: 12px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    .answer-block {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      display: none;
+    }
+    .answer-block span.answer {
+      font-weight: 700;
+      color: #2e7d32;
+    }
+    .law-block {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #fff8e1;
+      border: 1px solid #ffe0b2;
+      display: none;
+      font-size: 14px;
+      color: #5d4037;
+    }
+    .status-bar {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #555;
+    }
+    .score-block {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 6px;
+      background: #e3f2fd;
+      border: 1px solid #bbdefb;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 12px;
+      border-radius: 4px;
+      background: #eee;
+      margin-left: 6px;
+      color: #555;
+    }
+    @media (max-width: 640px) {
+      .flex-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .question-header {
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>營業員考試練習系統 - 星鴻宜蘭團隊</h1>
+    <p style="text-align:center; margin-top:0; font-size:14px; color:#555;">
+      模式：學習（看答案）／模擬考（計分）。
+    </p>
+
+    <div class="mode-block">
+      <div class="flex-row">
+        <label>模式：</label>
+        <label>
+          <input type="radio" name="mode" value="learn" checked>
+          1. 學習模式
+        </label>
+        <label>
+          <input type="radio" name="mode" value="mock">
+          2. 模擬考模式
+        </label>
+      </div>
+
+      <div class="flex-row">
+        <label for="subjectSelect">科目：</label>
+        <select id="subjectSelect">
+          <option value="all">全部科目</option>
+          <option value="土地法">土地法</option>
+          <option value="土地稅法">土地稅法</option>
+          <option value="平均地權條例">平均地權條例</option>
+          <option value="土地徵收條例">土地徵收條例</option>
+          <option value="公平交易法">公平交易法</option>
+          <option value="公寓大廈管理條例">公寓大廈管理條例</option>
+          <option value="房屋稅條例">房屋稅條例</option>
+          <option value="契稅條例">契稅條例</option>
+          <option value="消費者保護法">消費者保護法</option>
+          <option value="民法">民法</option>
+          <option value="各式契約書範本及不動產說明書應記載及不得記載事項">各式契約／說明書</option>
+          <option value="不動產經紀業管理條例">不動產經紀業管理條例</option>
+        </select>
+
+        <label for="mockCount" style="margin-left:8px;">模擬考題數：</label>
+        <select id="mockCount">
+          <option value="10">10 題</option>
+          <option value="50">50 題</option>
+          <option value="100">100 題</option>
+        </select>
+
+        <button id="startBtn">開始</button>
+      </div>
+    </div>
+
+    <div id="questionArea" class="question-card" style="display:none;">
+      <div class="question-header">
+        <div>
+          <span id="questionNumber"></span>
+          <span id="questionSubject" class="tag"></span>
+        </div>
+        <div id="questionLawRef"></div>
+      </div>
+      <div class="question-text" id="questionText"></div>
+      <div class="options" id="optionsContainer"></div>
+
+      <div>
+        <button id="toggleAnswerBtn" class="secondary">顯示答案</button>
+        <button id="openLawBtn" class="secondary">顯示法源出處</button>
+      </div>
+
+      <div class="answer-block" id="answerBlock">
+        <div>正確答案：<span class="answer" id="answerText"></span></div>
+        <div id="answerExplanation"></div>
+      </div>
+
+      <div class="law-block" id="lawSourceBlock">
+        法源出處：<span id="lawSourceText"></span>
+      </div>
+
+      <div class="status-bar" id="statusBar"></div>
+
+      <div style="margin-top:10px;">
+        <button id="prevBtn" class="secondary">上一題</button>
+        <button id="nextBtn">下一題</button>
+        <button id="submitBtn" style="display:none;">送出本題</button>
+      </div>
+    </div>
+
+    <div id="scoreArea" class="score-block" style="display:none;"></div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script>
+    if (typeof questions === 'undefined') {
+      alert('questions.js 尚未正確載入或尚未建立題庫資料。');
+    }
+
+    let mode = 'learn';
+    let subjectFilter = 'all';
+    let mockCount = 10;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let mockTotal = 0;
+    let mockCorrect = 0;
+
+    const modeRadios = document.querySelectorAll('input[name="mode"]');
+    const subjectSelect = document.getElementById('subjectSelect');
+    const mockCountSelect = document.getElementById('mockCount');
+    const startBtn = document.getElementById('startBtn');
+
+    const questionArea = document.getElementById('questionArea');
+    const questionNumber = document.getElementById('questionNumber');
+    const questionSubject = document.getElementById('questionSubject');
+    const questionLawRef = document.getElementById('questionLawRef');
+    const questionText = document.getElementById('questionText');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const toggleAnswerBtn = document.getElementById('toggleAnswerBtn');
+    const openLawBtn = document.getElementById('openLawBtn');
+    const answerBlock = document.getElementById('answerBlock');
+    const answerText = document.getElementById('answerText');
+    const answerExplanation = document.getElementById('answerExplanation');
+    const lawSourceBlock = document.getElementById('lawSourceBlock');
+    const lawSourceText = document.getElementById('lawSourceText');
+    const statusBar = document.getElementById('statusBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const scoreArea = document.getElementById('scoreArea');
+
+    function shuffle(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function filterBySubject(subject) {
+      if (subject === 'all') return questions.slice();
+      return questions.filter(q => q.subject === subject);
+    }
+
+    function getSelectedOption() {
+      const radios = document.querySelectorAll('input[name="option"]');
+      for (const r of radios) {
+        if (r.checked) return r.value;
+      }
+      return null;
+    }
+
+    function resetAnswerBlock() {
+      answerBlock.style.display = 'none';
+      toggleAnswerBtn.textContent = '顯示答案';
+      lawSourceBlock.style.display = 'none';
+      openLawBtn.textContent = '顯示法源出處';
+      const radios = document.querySelectorAll('input[name="option"]');
+      radios.forEach(r => (r.checked = false));
+    }
+
+    function renderQuestion() {
+      if (!currentQuestions.length) {
+        questionArea.style.display = 'none';
+        scoreArea.style.display = 'none';
+        alert('目前題庫為空，請先建立 questions.js 題庫資料。');
+        return;
+      }
+
+      const q = currentQuestions[currentIndex];
+      questionArea.style.display = 'block';
+      scoreArea.style.display = 'none';
+
+      questionNumber.textContent = `第 ${currentIndex + 1} 題 / 共 ${currentQuestions.length} 題`;
+      questionSubject.textContent = q.subject || '未標示科目';
+      questionText.textContent = q.text;
+      questionLawRef.textContent = '';
+
+      optionsContainer.innerHTML = '';
+      ['A', 'B', 'C', 'D'].forEach(key => {
+        if (!q.options[key]) return;
+        const label = document.createElement('label');
+        label.innerHTML = `
+          <input type="radio" name="option" value="${key}">
+          (${key}) ${q.options[key]}
+        `;
+        optionsContainer.appendChild(label);
+      });
+
+      answerText.textContent = q.answer || '';
+      answerExplanation.textContent = q.lawNote || '';
+      lawSourceText.textContent = q.lawRef || '';
+      resetAnswerBlock();
+
+      if (mode === 'learn') {
+        statusBar.textContent = '學習模式：可自由切換上一題／下一題，並顯示答案與法源出處。';
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+        prevBtn.style.display = 'inline-block';
+        toggleAnswerBtn.style.display = 'inline-block';
+        openLawBtn.style.display = 'inline-block';
+      } else {
+        statusBar.textContent = `模擬考：答題後按「送出本題」，系統告知正誤與最後總分。`;
+        submitBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'none';
+        prevBtn.style.display = 'none';
+        toggleAnswerBtn.style.display = 'none';
+        openLawBtn.style.display = 'none';
+      }
+
+      prevBtn.disabled = (mode === 'learn' && currentIndex === 0);
+      nextBtn.disabled = (mode === 'learn' && currentIndex === currentQuestions.length - 1);
+    }
+
+    modeRadios.forEach(r => {
+      r.addEventListener('change', () => {
+        mode = document.querySelector('input[name="mode"]:checked').value;
+        questionArea.style.display = 'none';
+        scoreArea.style.display = 'none';
+      });
+    });
+
+    subjectSelect.addEventListener('change', () => {
+      subjectFilter = subjectSelect.value;
+    });
+
+    mockCountSelect.addEventListener('change', () => {
+      mockCount = parseInt(mockCountSelect.value, 10);
+    });
+
+    startBtn.addEventListener('click', () => {
+      subjectFilter = subjectSelect.value;
+      mockCount = parseInt(mockCountSelect.value, 10);
+
+      const pool = filterBySubject(subjectFilter);
+      if (!pool.length) {
+        alert('這個科目目前沒有題目，請先在 questions.js 中加入該科目題庫。');
+        return;
+      }
+
+      if (mode === 'learn') {
+        currentQuestions = pool.slice().sort((a, b) => a.id.localeCompare(b.id));
+        currentIndex = 0;
+        renderQuestion();
+      } else {
+        const shuffled = shuffle(pool);
+        currentQuestions = shuffled.slice(0, Math.min(mockCount, shuffled.length));
+        currentIndex = 0;
+        mockTotal = currentQuestions.length;
+        mockCorrect = 0;
+        renderQuestion();
+      }
+    });
+
+    toggleAnswerBtn.addEventListener('click', () => {
+      if (mode === 'mock') return;
+      if (answerBlock.style.display === 'none') {
+        answerBlock.style.display = 'block';
+        toggleAnswerBtn.textContent = '隱藏答案';
+      } else {
+        answerBlock.style.display = 'none';
+        toggleAnswerBtn.textContent = '顯示答案';
+      }
+    });
+
+    openLawBtn.addEventListener('click', () => {
+      if (mode === 'mock') return;
+      if (lawSourceBlock.style.display === 'none') {
+        lawSourceBlock.style.display = 'block';
+        openLawBtn.textContent = '隱藏法源出處';
+      } else {
+        lawSourceBlock.style.display = 'none';
+        openLawBtn.textContent = '顯示法源出處';
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (mode !== 'learn') return;
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (mode !== 'learn') return;
+      if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    });
+
+    submitBtn.addEventListener('click', () => {
+      if (!currentQuestions.length) return;
+      const q = currentQuestions[currentIndex];
+      const selected = getSelectedOption();
+      if (!selected) {
+        alert('請先選擇一個選項。');
+        return;
+      }
+
+      answerBlock.style.display = 'block';
+      toggleAnswerBtn.textContent = '隱藏答案';
+
+      if (selected === q.answer) {
+        mockCorrect++;
+        statusBar.textContent = `答對了！目前答對 ${mockCorrect} / ${mockTotal} 題。`;
+      } else {
+        statusBar.textContent = `答錯了，本題正確答案為 ${q.answer}。目前答對 ${mockCorrect} / ${mockTotal} 題。`;
+      }
+
+      if (currentIndex < currentQuestions.length - 1) {
+        setTimeout(() => {
+          currentIndex++;
+          renderQuestion();
+        }, 600);
+      } else {
+        const score = Math.round((mockCorrect / mockTotal) * 100);
+        scoreArea.style.display = 'block';
+        scoreArea.innerHTML = `
+          <strong>模擬考結束</strong><br>
+          總題數：${mockTotal} 題<br>
+          答對題數：${mockCorrect} 題<br>
+          得分：${score} 分
+        `;
+      }
+    });
+  </script>
+</body>
+</html>
