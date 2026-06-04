@@ -534,14 +534,15 @@
           得分：${score} 分
         `;
       }
-    } else {
-      // 答錯：立刻顯示正確答案 + 提示，停留在本題，要求按「下一題」
-      answerBlock.style.display = 'block';
-      toggleAnswerBtn.style.display = 'inline-block';
-      toggleAnswerBtn.textContent = '下一題';
-      pendingWrongReview = true;
-      statusBar.textContent = `答錯了，本題正確答案為 ${q.answer}。請看完正確答案後，按「下一題」繼續。`;
-    }
+} else {
+  // 答錯：立刻顯示正確答案 + 提示，停留在本題，要求按「下一題」
+  answerBlock.style.display = 'block';
+  toggleAnswerBtn.style.display = 'inline-block';
+  toggleAnswerBtn.textContent = '下一題';
+  submitBtn.style.display = 'none';          // ← 新增這行：看正解時隱藏「送出本題」
+  pendingWrongReview = true;
+  statusBar.textContent = `答錯了，本題正確答案為 ${q.answer}。請看完正確答案後，按「下一題」繼續。`;
+}
   });
 </script>
 </body>
