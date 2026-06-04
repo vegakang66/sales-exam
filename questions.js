@@ -2,6 +2,33 @@
  * 來源：113Nian-Shi-Ti(1).pdf
  * 欄位：id, subject, text, options, answer, lawRef, lawNote, lawSearchKeyword
  */
+// 字體大小控制
+const fontSmaller = document.getElementById('fontSmaller');
+const fontBigger = document.getElementById('fontBigger');
+let currentFontSize = 16; // 預設 16px
+const MIN_FONT = 14;
+const MAX_FONT = 24;
+
+function applyFontSize() {
+  document.documentElement.style.fontSize = currentFontSize + 'px';
+}
+
+// 初始化一次
+applyFontSize();
+
+fontSmaller.addEventListener('click', () => {
+  if (currentFontSize > MIN_FONT) {
+    currentFontSize -= 1;
+    applyFontSize();
+  }
+});
+
+fontBigger.addEventListener('click', () => {
+  if (currentFontSize < MAX_FONT) {
+    currentFontSize += 1;
+    applyFontSize();
+  }
+});
 const questions = [
   {
     "id": "土地法-1",
